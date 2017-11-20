@@ -1,7 +1,17 @@
 #!/usr/bin/env bash
 # Usage
-# backup_sdp.bash --file targets.csv --exclude host01 hos*02 --destination /data/backup
+# backup_sdp.bash --file=targets.csv --exclude=host01 hos*02 --destination=/data/backup
+#
+#Prerequistes
+#Backup server being able to SSH to the targeted servers
+#
+# Not enforced:
+#User named 'backuper' on all involved systems. Must be able to read Targeted files, and write to Destination
+#Recommended to use ACL
+# example: setfacl -R -m u:backuper:r <backupfolder>
 
+#Set script location as working directory
+cd "${0%/*}"
 # Argument parsing structure
 for i in "$@"
 do
@@ -24,18 +34,18 @@ case $i in
 esac
 done
 
-if [ ! -f "$INPUT_CSV"]; then
-    echo "Can't find specified file...exiting";
-    exit 1;
+if [ ! -f $INPUT_CSV ]; then
+    echo "Can't find $INPUT_CSV...exiting"
+    exit 1
 fi
 
 # Set defaul
-if [ -z "$INPUT_CSV"]; then
+if [ -z  $INPUT_CSV ]; then
     INPUT_CSV='targets.csv'
 fi
 
 # Set default backup location
-if [ -z $DESTINATION]; then
+if [ -z $DESTINATION ]; then
     DESTINATION='/data/backup'
 fi
 
@@ -54,12 +64,21 @@ do
     #if ${EXCLUDE_HOSTS}== *$(COMPUTERNAME)*; then
     #    continue
     #fi
+    #Create path for computername in target dir
+    CNAME_PATH=$DESTINATION/$ALT_HOSTNAME/
+    #echo "All backup vil skrives til $CNAME_PATH"
 
-    echo "Will operate with this data: ""$COMPUTERNAME" "$ALT_HOSTNAME" "$IP" "$DIR"
+    #echo "Will operate with this data: Target: $COMPUTERNAME aka $ALT_HOSTNAME IP: $IP Dir. to backup: $DIR"
+    if [ ! -d $CNAME_PATH ]; then
+        mkdir -v $CNAME_PATH
+    fi
+
     # Split dirs to backup into /<dir> :/<dir/
     DIR=$(echo "$DIR" | sed 's/:/ :/g')
-    echo "Rsyncing $COMPUTERNAME:$DIR down to $DESTINATION on local..."
-    #rsync -arze ssh root@$COMPUTERNAME:$DIR $DESTINATION/$ALT_HOSTNAME
+    echo "Rsyncing $COMPUTERNAME:$DIR down to $CNAME_PATH on local..."
+    echo "rsync -av root@$COMPUTERNAME:$DIR $CNAME_PATH ..."
+    rsync -av root@$COMPUTERNAME:$DIR $CNAME_PATH
+    #Vurder bruk av --update, og en annen bruker en root. etc. 'backuper'
 
 
 done < $INPUT_CSV
