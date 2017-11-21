@@ -11,7 +11,9 @@
 # example: setfacl -R -m u:backuper:r <backupfolder>
 
 #Set script location as working directory
+PATH=$PATH:/bin/rsync
 cd "${0%/*}"
+
 # Argument parsing structure
 for i in "$@"
 do
@@ -66,16 +68,11 @@ do
     #fi
     #Create path for computername in target dir
     CNAME_PATH=$DESTINATION/$ALT_HOSTNAME/
-    #echo "All backup vil skrives til $CNAME_PATH"
 
-    #echo "Will operate with this data: Target: $COMPUTERNAME aka $ALT_HOSTNAME IP: $IP Dir. to backup: $DIR"
     if [ ! -d $CNAME_PATH ]; then
         mkdir -v $CNAME_PATH
     fi
 
-    # Split dirs to backup into /<dir> :/<dir/
-    DIR=$(echo "$DIR" | sed 's/:/ :/g')
-    echo "Rsyncing $COMPUTERNAME:$DIR down to $CNAME_PATH on local..."
     echo "rsync -av root@$COMPUTERNAME:$DIR $CNAME_PATH ..."
     rsync -av root@$COMPUTERNAME:$DIR $CNAME_PATH
     #Vurder bruk av --update, og en annen bruker en root. etc. 'backuper'
