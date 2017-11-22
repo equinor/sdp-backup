@@ -57,14 +57,17 @@ echo "Backup destination is: $DESTINATION"
 
 # Iterate through the input .csv file and perform rsync backup.
 # May want to do this in parallel.
+minTEST=0
 
 IFS=','
 while read COMPUTERNAME ALT_HOSTNAME IP DIR EXCLUDE
 do
 
+    echo $minTEST
+    minTEST=$((minTEST+1))
+
     #Create path for computername in target dir
     CNAME_PATH=$DESTINATION/$ALT_HOSTNAME/
-
     if [ ! -d $CNAME_PATH ]; then
         mkdir -v $CNAME_PATH
     fi
@@ -75,17 +78,14 @@ do
         ROPTION+=("--exclude=$i")
     done
 
-
-    #echo "${ROPTION[@]}"
     echo "rsync -av ${ROPTION[@]} root@$COMPUTERNAME:$DIR $CNAME_PATH"
     /usr/bin/rsync -av \
-    #Exclude array
     ${ROPTION[@]} \
-    #Target to backup
     root@$COMPUTERNAME:$DIR \
-    #Destination
     $CNAME_PATH
-    #Vurder bruk av --update, og en annen bruker enn root. etc. backuper
+
+    ROPTION=()
+    EXCLUDELIST=()
 
 done < $INPUT_CSV
 
