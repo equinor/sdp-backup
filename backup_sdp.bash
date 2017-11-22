@@ -1,14 +1,20 @@
 #!/usr/bin/env bash
 # Usage
-# backup_sdp.bash --file=targets.csv --exclude=host01 hos*02 --destination=/data/backup
+# backup_sdp.bash --file=targets.csv --destination=/data/backup
+#
+#INPUT
+#This script is designed to use a .CSV-file as input. The file must use "," as a separator, and
+#have the following columns;
+#<computername>,<alternative computername>,<IP>,
+#<"/folder/to/copy" "/second/folder/to/copy">,<"/folder/to/exclude" "/second/folder/to/exclude">
 #
 #Prerequistes
 #Backup server being able to SSH to the targeted servers
 #
-# Not enforced:
+#Not implemented(21.11.2017):
 #User named 'backuper' on all involved systems. Must be able to read Targeted files, and write to Destination
 #Recommended to use ACL
-# example: setfacl -R -m u:backuper:r <backupfolder>
+#example: setfacl -R -m u:backuper:r <backupfolder>
 
 #Set script location as working directory
 PATH=$PATH:/bin/rsync
@@ -20,11 +26,6 @@ do
 case $i in
     -f=*|--file=*)
     INPUT_CSV=$(cut -d '=' -f 2 <<< $i)
-    shift
-    ;;
-
-    -e=*|--exlcude=*)
-    EXCLUDE_HOSTS=$(cut -d '=' -f 2 <<< $i)
     shift
     ;;
 
@@ -52,20 +53,15 @@ if [ -z $DESTINATION ]; then
 fi
 
 echo "Input file is: $INPUT_CSV"
-echo "Excluded hosts are: $EXCLUDE_HOSTS"
 echo "Backup destination is: $DESTINATION"
 
 # Iterate through the input .csv file and perform rsync backup.
 # May want to do this in parallel.
 
 IFS=','
-while read COMPUTERNAME ALT_HOSTNAME IP DIR
+while read COMPUTERNAME ALT_HOSTNAME IP DIR EXCLUDE
 do
 
-    # Test if hostname matches exclude
-    #if ${EXCLUDE_HOSTS}== *$(COMPUTERNAME)*; then
-    #    continue
-    #fi
     #Create path for computername in target dir
     CNAME_PATH=$DESTINATION/$ALT_HOSTNAME/
 
@@ -73,10 +69,23 @@ do
         mkdir -v $CNAME_PATH
     fi
 
-    echo "rsync -av root@$COMPUTERNAME:$DIR $CNAME_PATH ..."
-    rsync -av root@$COMPUTERNAME:$DIR $CNAME_PATH
-    #Vurder bruk av --update, og en annen bruker en root. etc. 'backuper'
+    IFS=' ' read -r -a EXCLUDELIST <<< "$EXCLUDE"
+    for i in "${EXCLUDELIST[@]}"
+    do
+        ROPTION+=("--exclude=$i")
+    done
 
+
+    #echo "${ROPTION[@]}"
+    echo "rsync -av ${ROPTION[@]} root@$COMPUTERNAME:$DIR $CNAME_PATH"
+    /usr/bin/rsync -av \
+    #Exclude array
+    ${ROPTION[@]} \
+    #Target to backup
+    root@$COMPUTERNAME:$DIR \
+    #Destination
+    $CNAME_PATH
+    #Vurder bruk av --update, og en annen bruker enn root. etc. backuper
 
 done < $INPUT_CSV
 
