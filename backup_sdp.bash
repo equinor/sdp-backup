@@ -6,10 +6,10 @@
 #This script is designed to use a .CSV-file as input. The file must use "," as a separator, and
 #have the following columns;
 #<computername>,<alternative computername>,<IP>,
-#<"/folder/to/copy" "/second/folder/to/copy">,<"/folder/to/exclude" "/second/folder/to/exclude">
+#<"/folder/to/copy" "/second/folder/to/copy">,</folder/to/exclude /second/folder/to/exclude>
 #
 #Prerequistes
-#Backup server being able to SSH to the targeted servers
+#Backup server being able to SSH to the targeted servers(as password less root)
 #
 #Not implemented(21.11.2017):
 #User named 'backuper' on all involved systems. Must be able to read Targeted files, and write to Destination
@@ -37,11 +37,6 @@ case $i in
 esac
 done
 
-if [ ! -f $INPUT_CSV ]; then
-    echo "Can't find $INPUT_CSV...exiting"
-    exit 1
-fi
-
 # Set defaul
 if [ -z  $INPUT_CSV ]; then
     INPUT_CSV='targets.csv'
@@ -50,6 +45,11 @@ fi
 # Set default backup location
 if [ -z $DESTINATION ]; then
     DESTINATION='/data/backup'
+fi
+
+if [ ! -f $INPUT_CSV ]; then
+    echo "Can't find $INPUT_CSV...exiting"
+    exit 1
 fi
 
 echo "Input file is: $INPUT_CSV"
