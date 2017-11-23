@@ -1,0 +1,5 @@
+for i in $(docker ps --format='{{.Names}}')
+do
+  echo -n "Volumes for ${i}: "
+  docker inspect --format='{{range .Mounts}}{{.Source}}{{end}}' ${i}
+done
