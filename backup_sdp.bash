@@ -18,6 +18,7 @@
 
 #Set script location as working directory
 PATH=$PATH:/bin/rsync
+set -e
 cd "${0%/*}"
 
 # Argument parsing structure
@@ -59,7 +60,7 @@ echo "Backup destination is: $DESTINATION"
 # May want to do this in parallel.
 minTEST=0
 
-IFS=','
+IFS=';'
 while read COMPUTERNAME ALT_HOSTNAME IP DIR EXCLUDE
 do
 
