@@ -1,3 +1,1 @@
 ai-linapp1068.statoil.no
-#tr-vsdp02.tr.statoil.no
-st-linapp1040.statoil.no

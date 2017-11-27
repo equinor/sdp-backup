@@ -80,7 +80,7 @@ do
     done
 
     echo "rsync -av ${ROPTION[@]} root@$COMPUTERNAME:$DIR $CNAME_PATH"
-    /usr/bin/rsync -av \
+    /usr/bin/rsync -ave ssh -o StrictHostKeyChecking=no\
     ${ROPTION[@]} \
     root@$COMPUTERNAME:$DIR \
     $CNAME_PATH

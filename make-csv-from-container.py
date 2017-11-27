@@ -1,52 +1,55 @@
+# coding=utf-8
 # Generates a csv-file from running containers on the nodes specified in the docker-nodes.txt.
 # The CSV-file is intended to be used as input for the backup_sdp.bash script.
 import subprocess
 import sys
 import json
-import csv
 
 with open('docker-nodes.txt') as nodefile:
     nodes = nodefile.readlines()
-print nodes
 
+def ssh(host, command):
 
-def ssh(HOST,COMMAND):
-    ssh = subprocess.Popen(["ssh", "%s" % HOST, COMMAND],
-                           shell=False,
-                           stdout=subprocess.PIPE,
-                           stderr=subprocess.PIPE)
-    result = ssh.stdout.readlines()
-    if result == []:
-        error = ssh.stderr.readlines()
+    message = subprocess.Popen(
+        ["ssh", "%s" % host, command],
+        shell=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE
+    )
+    result = message.stdout.readlines()
+    if not result:
+        error = message.stderr.readlines()
         print >> sys.stderr, "ERROR: %s" % error
+        exit(1)
     else:
         return result
 
 
-user="root@"
-for node in nodes:
-    HOST = user+node
-    COMMAND = "docker ps --format={{.Names}}"
-    containers = ssh(HOST,COMMAND)
-    mount_format = ""
+user = "stoo@"
+with open('py_targets.csv', 'w') as targetfile:
+    for node in nodes:
+        vhost = user + node
+        vhost = vhost.strip("\n")
+        cmd = "docker ps --format='{{.Names}}'"
+        containers = ssh(vhost, cmd)
+        mount_format = ""
 
-    for container in containers:
-        #This should work, but does takes ALL mounts, not only binds.
-        #COMMAND = "docker inspect --format='{{range .Mounts}};{{.Source}};{{end}}' %s" % (container)
-        #volume_mounts = ssh(HOST,COMMAND)
-        #volume_mounts = volume_mounts.split(';')
-        # for mount in volume_mounts:
-        #   mount_format += "'%s' " % (mount)
+        for container in containers:
+            container = container.strip("\n")
+            cmd = "docker inspect --format='{{{{json .Mounts}}}}' {container}".format(container=container)
+            # json_strings = ssh(vhost, cmd)
+            # mounts_json = [json.loads(json_string) for json_string in json_strings]
+            mounts_json = json.loads(ssh(vhost, cmd)[0])
 
+            for mount in mounts_json:
+                if 'Type' in mount and mount['Type'] is not None:
+                    if mount['Type'].lower() == 'bind':
+                        mount_source = mount['Source']
+                        print "Adding '{mount_source}' on node '{node}' container '{container}' to backuplist...".format(mount_source=mount_source, node=node, container=container)
+                        mount_format += "{mount_source} ".format(mount_source=mount_source)
 
-        COMMAND = "docker inspect --format '{{json .Mounts}}' %s" % (container)
-        mounts_json = json.loads(ssh(HOST,COMMAND))
+                    else:
+                        non_bind = mount['Source']
+                        print "Skipping volume {non_bind} on {node} on container {container} as it's not a 'bind' type".format(non_bind=non_bind, node=node, container=container)
 
-        for mount in mounts_json:
-            if mount['Type'] == 'Bind':
-                mount_format += "'%s' " % (mount)
-            else:
-                error = "Skipping volume as it's not a 'bind' type"
-
-    with open('py_targets.csv', 'a') as targetfile:
-        targetfile.write('%s;;;%s;') % (node,mount_format)
+            targetfile.write('{node};;;{mount_format};\n'.format(node=node, mount_format=mount_format))
