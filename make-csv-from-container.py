@@ -51,4 +51,4 @@ with open('py_targets.csv', 'w') as targetfile:
                         non_bind = mount['Source']
                         print "Skipping volume {non_bind} on {node} on container {container} as it's not a 'bind' type".format(non_bind=non_bind, node=node, container=container)
 
-        targetfile.write('{node};;;{mount_format};\n'.format(node=node, mount_format=mount_format))
+        targetfile.write('{node};{node};;{mount_format};\n'.format(node=node, mount_format=mount_format))
