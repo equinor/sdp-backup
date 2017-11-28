@@ -63,15 +63,13 @@ minTEST=0
 IFS=';'
 while read COMPUTERNAME ALT_HOSTNAME IP DIR EXCLUDE
 do
-
-    echo $minTEST
-    minTEST=$((minTEST+1))
-
     #Create path for computername in target dir
     CNAME_PATH=$DESTINATION/$ALT_HOSTNAME/
     if [ ! -d $CNAME_PATH ]; then
         mkdir -v $CNAME_PATH
     fi
+    # Makes DIR to a array
+    IFS=' ' read -r -a DIRLIST <<< "$DIR"
 
     IFS=' ' read -r -a EXCLUDELIST <<< "$EXCLUDE"
     for i in "${EXCLUDELIST[@]}"
@@ -82,7 +80,7 @@ do
     echo "rsync -av ${ROPTION[@]} root@$COMPUTERNAME:$DIR $CNAME_PATH"
     /usr/bin/rsync -ave ssh -o StrictHostKeyChecking=no\
     ${ROPTION[@]} \
-    root@$COMPUTERNAME:$DIR \
+    root@$COMPUTERNAME:${DIRLIST[@]} \
     $CNAME_PATH
 
     ROPTION=()

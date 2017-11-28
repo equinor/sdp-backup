@@ -25,11 +25,12 @@ def ssh(host, command):
         return result
 
 
-user = "stoo@"
+user = "root@"
 with open('py_targets.csv', 'w') as targetfile:
     for node in nodes:
         vhost = user + node
         vhost = vhost.strip("\n")
+        node = node.strip("\n")
         cmd = "docker ps --format='{{.Names}}'"
         containers = ssh(vhost, cmd)
         mount_format = ""
@@ -37,8 +38,6 @@ with open('py_targets.csv', 'w') as targetfile:
         for container in containers:
             container = container.strip("\n")
             cmd = "docker inspect --format='{{{{json .Mounts}}}}' {container}".format(container=container)
-            # json_strings = ssh(vhost, cmd)
-            # mounts_json = [json.loads(json_string) for json_string in json_strings]
             mounts_json = json.loads(ssh(vhost, cmd)[0])
 
             for mount in mounts_json:
@@ -46,7 +45,7 @@ with open('py_targets.csv', 'w') as targetfile:
                     if mount['Type'].lower() == 'bind':
                         mount_source = mount['Source']
                         print "Adding '{mount_source}' on node '{node}' container '{container}' to backuplist...".format(mount_source=mount_source, node=node, container=container)
-                        mount_format += "{mount_source} ".format(mount_source=mount_source)
+                        mount_format += "\"{mount_source}\" ".format(mount_source=mount_source)
 
                     else:
                         non_bind = mount['Source']
