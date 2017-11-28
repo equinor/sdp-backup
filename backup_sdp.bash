@@ -59,9 +59,6 @@ echo "Backup destination is: $DESTINATION"
 IFS=';'
 while read COMPUTERNAME ALT_HOSTNAME IP DIR EXCLUDE
 do
-    if [[ $COMPUTERNAME == \#* ]]; then
-        continue
-    fi
     #Create path for computername in target dir
     CNAME_PATH=$DESTINATION/$ALT_HOSTNAME/
     if [ ! -d $CNAME_PATH ]; then
