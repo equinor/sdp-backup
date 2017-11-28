@@ -77,10 +77,12 @@ do
         ROPTION+=("--exclude=$i")
     done
 
-    echo "rsync -av ${ROPTION[@]} root@$COMPUTERNAME:$DIR $CNAME_PATH"
-    /usr/bin/rsync -ave ssh -o StrictHostKeyChecking=no\
+    echo "/usr/bin/rsync -ave ssh -o StrictHostKeyChecking=no\
     ${ROPTION[@]} \
     root@$COMPUTERNAME:${DIRLIST[@]} \
+    $CNAME_PATH"
+    /usr/bin/rsync -ave ssh -o StrictHostKeyChecking=no\
+    ${ROPTION[@]} root@$COMPUTERNAME:${DIRLIST[@]} \
     $CNAME_PATH
 
     ROPTION=()
