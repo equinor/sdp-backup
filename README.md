@@ -8,6 +8,7 @@ The main backup script can be used in two ways.
 Prerequisites
 * The server running the script (the backup server) must be able to do a passwordless SSH login to all the target nodes(SSH Authorized_Keys).
 * On servers not hosted in AWS, the backup server must be allowed in the files '/etc/security/access'
+* The 'target.csv'-file must have an empty new-line at EOF...
 
 ## 1# Manual CSV
 ### How to
