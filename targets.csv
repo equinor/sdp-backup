@@ -1,2 +1,4 @@
 ai-linapp1068.statoil.no;git01.beta.sdp.statoil.no;10.36.33.122;"/home/stoo/backupTHISmofo";backupTHISmofo/notTHIS* backupTHISmofo/ikkeDENNEheller.txt
 st-linapp1040.st.statoil.no;vmm04.prod.sdp.statoil.no;;"/data/docker";
+tr-vsdp01.tr.statoil.no;git01.prod.sdp.statoil.no;;"/data/docker/dockerfiles";
+ai-linapp1034.statoil.no;mon01.prod.sdp.statoil.no;"/data";dockerroot*

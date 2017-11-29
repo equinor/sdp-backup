@@ -16,9 +16,7 @@
 #Recommended to use ACL
 #example: setfacl -R -m u:backuper:r <backupfolder>
 
-#Set script location as working directory
 PATH=$PATH:/bin/rsync
-set -e
 cd "${0%/*}"
 
 # Argument parsing structure
@@ -37,7 +35,7 @@ case $i in
 esac
 done
 
-# Set default
+# Set default input file
 if [ -z  ${INPUT_CSV} ]; then
     INPUT_CSV='targets.csv'
 fi
@@ -69,7 +67,8 @@ do
     for i in "${EXCLUDELIST[@]}"; do
         ROPTION+=("--exclude=$i")
     done
-    #
+
+    echo "Working on node: $COMPUTERNAME..."
     rsync -ave "ssh -o StrictHostKeyChecking=no" \
     ${ROPTION[@]} root@$COMPUTERNAME:$DIR \
     $CNAME_PATH
