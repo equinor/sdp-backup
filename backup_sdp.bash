@@ -69,7 +69,7 @@ do
     done
 
     echo "Working on node: $COMPUTERNAME..."
-    rsync -ave "ssh -o StrictHostKeyChecking=no" \
+    rsync -ae "ssh -o StrictHostKeyChecking=no" \
     ${ROPTION[@]} root@$COMPUTERNAME:$DIR \
     $CNAME_PATH
 
