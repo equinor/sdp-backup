@@ -6,3 +6,4 @@ tr-vsdp03.tr.statoil.no;vmm03.prod.sdp.statoil.no;;"/data/docker" "/data/sdpsoft
 ai-linapp1085.statoil.no;jenkins01.prod.sdp.statoil.no;;"/data";
 ai-linapp1024.statoil.no;tig01.prod.sdp.statoil.no;;"/data";
 st-linapp1037.st.statoil.no;app01.dev.rip.statoil.no;;"/data/rip";
+ai-linapp1085.statoil.no;jenkins01.prod.sdp.statoil.no;;"/data";
