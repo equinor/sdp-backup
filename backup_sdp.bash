@@ -52,6 +52,8 @@ fi
 
 echo "Input file is: $INPUT_CSV"
 echo "Backup destination is: $DESTINATION"
+echo " "
+echo "Started job @ $(date --rfc-3339=seconds)"
 
 # Iterate through the input .csv file and perform rsync backup.
 IFS=';'
@@ -77,5 +79,8 @@ do
     EXCLUDELIST=()
 
 done < $INPUT_CSV
+
+echo "Backup job finnished @ $(date --rfc-3339=seconds)"
+echo "$(($SECONDS / 60)) minutes and $(($SECONDS % 60)) seconds elapsed."
 
 exit 0
