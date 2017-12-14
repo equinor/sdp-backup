@@ -81,6 +81,6 @@ do
 done < $INPUT_CSV
 
 echo "Backup job finnished @ $(date --rfc-3339=seconds)"
-echo "$(($SECONDS / 60)) minutes and $(($SECONDS % 60)) seconds elapsed."
+echo " The job took $(date -u -d @${SECONDS} +"%T".)"
 
 exit 0
