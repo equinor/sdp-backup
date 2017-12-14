@@ -20,19 +20,26 @@ PATH=$PATH:/bin/rsync
 cd "${0%/*}"
 
 # Argument parsing structure
-for i in "$@"; do
-case $i in
-    -f=*|--file=*)
-    INPUT_CSV=$(cut -d '=' -f 2 <<< $i)
-    shift
-    ;;
 
-    -d=*|--destination=*)
-    DESTINATION=$(cut -d '=' -f 2 <<< $i)
-    shift
-    ;;
-
-esac
+while getopts ":f:d:" opt; do
+  case $opt in
+    f)
+      echo $OPTARG
+      INPUT_CSV=$OPTARG
+      ;;
+    d)
+      DESTINATION=$OPTARG
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG"
+      echo "Usage: backup_sdp.bash [-f <input csv file>] [-d <destination path for backup>]"
+      exit 1
+      ;;
+    :)
+      echo "Option -$OPTARG requires an argument."
+      exit 1
+      ;;
+  esac
 done
 
 # Set default input file
