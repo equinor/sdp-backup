@@ -24,7 +24,6 @@ cd "${0%/*}"
 while getopts ":f:d:" opt; do
   case $opt in
     f)
-      echo $OPTARG
       INPUT_CSV=$OPTARG
       ;;
     d)
