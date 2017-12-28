@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Usage
-# backup_sdp.bash --file=targets.csv --destination=/data/backup
+# backup_sdp.bash -f targets.csv -d /data/backup
 #
 #INPUT
 #This script is designed to use a .CSV-file as input. The file must use ";" as a separator, and
@@ -58,7 +58,6 @@ fi
 
 echo "Input file is: $INPUT_CSV"
 echo "Backup destination is: $DESTINATION"
-echo " "
 echo "Started job @ $(date --rfc-3339=seconds)"
 
 # Iterate through the input .csv file and perform rsync backup.
@@ -76,7 +75,7 @@ do
         ROPTION+=("--exclude=$i")
     done
 
-    echo "Working on node: $COMPUTERNAME..."
+    echo "Working on node: $ALT_HOSTNAME..."
     rsync -ae "ssh -o StrictHostKeyChecking=no" \
     ${ROPTION[@]} root@$COMPUTERNAME:$DIR \
     $CNAME_PATH
@@ -88,5 +87,5 @@ done < $INPUT_CSV
 
 echo "Backup job finnished @ $(date --rfc-3339=seconds)"
 echo " The job took $(date -u -d @${SECONDS} +"%T".)"
-
+echo " "
 exit 0
