@@ -12,9 +12,10 @@ Prerequisites
 
 ## 1# Manual CSV
 ### How to
-1. Update the input file to reflect the desired backup operation. Default is './targets.csv' 
+1. Update the input file to reflect the desired backup operation. Default is './targets.csv'.
+ * Format: FQDN;[Alternative-DNS-name];[IP-Address];"DIR-to-backup" "Second-DIR-to-backup";[Sub-DIR-to-exclude]
 2. The script 'backup_sdp.bash' must be run as root
-3. Default input file is './targets.csv' and default destination is '/data/backup/'. Other values can be specified with '-f=/--file='' and '-d=/--destination='.
+3. Default input file is './targets.csv' and default destination is '/data/backup/'. Other values can be specified with '-f' and '-d'.
 
 ## 2# Auto-generated CSV-file
 ### How to
