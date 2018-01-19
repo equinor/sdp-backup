@@ -8,4 +8,4 @@ ai-linapp1024.statoil.no;tig01.prod.sdp.statoil.no;;"/data";
 st-linapp1037.st.statoil.no;app01.dev.rip.statoil.no;;"/data/rip";
 ai-linapp1085.statoil.no;jenkins01.prod.sdp.statoil.no;;"/data";
 ai-linapp1046.statoil.no;elk01.prod.sdp.statoil.no;;"/data/elk";
-st-linapp1046.statoil.no;jenkins02.prod.sdp.statoil.no;10.217.112.67;"/data";data/dockerroot*
+st-linapp1068.st.statoil.no;jenkins02.prod.sdp.statoil.no;10.217.112.67;"/data";data/dockerroot*
