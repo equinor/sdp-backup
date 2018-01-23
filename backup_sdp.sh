@@ -17,10 +17,16 @@
 #example: setfacl -R -m u:backuper:r <backupfolder>
 
 PATH=$PATH:/bin/rsync
-cd "${0%/*}"
+TIMESTAMP=$(date +\%y.\%m.\%d_\%H.\%M)
+LOGPATH="/tmp/"
+LOGFILE=$LOGPATH"backup_report_"$TIMESTAMP".log"
+echo "Redirecting stdout and stderr to " $LOGFILE
+exec 1<>$LOGFILE
+exec 2>&1
+
+cd $(dirname $0)
 
 # Argument parsing structure
-
 while getopts ":f:d:" opt; do
   case $opt in
     f)
