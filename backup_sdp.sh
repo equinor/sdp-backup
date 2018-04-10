@@ -20,10 +20,13 @@ PATH=$PATH:/bin/rsync
 TIMESTAMP=$(date +\%y.\%m.\%d_\%H.\%M)
 LOGPATH="/tmp/"
 LOGFILE=$LOGPATH"backup_report_"$TIMESTAMP".log"
-ERRORFILE=$LOGPATH"backup_report_error_"$TIMESTAMP".log"
-echo "Redirecting stdout $LOGFILE and stderr to $ERRORFILE"
+#ERRORFILE=$LOGPATH"backup_report_error_"$TIMESTAMP".log"
+#echo "Redirecting stdout $LOGFILE and stderr to $ERRORFILE"
+echo "Redirecting stdout and stderr to $LOGFILE"
+
 exec 1<>$LOGFILE
-exec 2<>$ERRORFILE
+exec 2>&1
+#exec 2<>$ERRORFILE
 
 cd $(dirname $0)
 
