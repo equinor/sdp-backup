@@ -20,13 +20,9 @@ PATH=$PATH:/bin/rsync
 TIMESTAMP=$(date +\%y.\%m.\%d_\%H.\%M)
 LOGPATH="/tmp/"
 LOGFILE=$LOGPATH"backup_report_"$TIMESTAMP".log"
-#ERRORFILE=$LOGPATH"backup_report_error_"$TIMESTAMP".log"
-#echo "Redirecting stdout $LOGFILE and stderr to $ERRORFILE"
 echo "Redirecting stdout and stderr to $LOGFILE"
-
 exec 1<>$LOGFILE
 exec 2>&1
-#exec 2<>$ERRORFILE
 
 cd $(dirname $0)
 
@@ -52,14 +48,9 @@ while getopts ":f:d:" opt; do
 done
 
 # Set default input file
-if [ -z  ${INPUT_CSV} ]; then
-    INPUT_CSV='targets.csv'
-fi
-
+[ -z  ${INPUT_CSV} ] && INPUT_CSV='targets.csv'
 # Set default backup location
-if [ -z ${DESTINATION} ]; then
-    DESTINATION='/data/backup'
-fi
+[ -z ${DESTINATION} ] && DESTINATION='/zfs/backup'
 
 if [ ! -f ${INPUT_CSV} ]; then
     echo "Can't find $INPUT_CSV...exiting"
@@ -74,11 +65,11 @@ echo "Started job @ $(date --rfc-3339=seconds)"
 IFS=';'
 while read COMPUTERNAME ALT_HOSTNAME IP DIR EXCLUDE
 do
-    #Create path for computername in target dir
+    # Check if line is commented and jump to next iteration
+    [[ $COMPUTERNAME =~ ^\# ]] && continue
+    #Create directory for computername in target dir
     CNAME_PATH=$DESTINATION/$ALT_HOSTNAME/
-    if [ ! -d $CNAME_PATH ]; then
-        mkdir -v $CNAME_PATH
-    fi
+    [ ! -d $CNAME_PATH ] && mkdir -v $CNAME_PATH
 
     IFS=' ' read -r -a EXCLUDELIST <<< "$EXCLUDE"
     for i in "${EXCLUDELIST[@]}"; do
