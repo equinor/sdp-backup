@@ -77,7 +77,7 @@ do
     done
 
     echo "Working on node: $ALT_HOSTNAME..."
-    rsync -aiqe "ssh -o StrictHostKeyChecking=no" --delete-during --numeric-ids\
+    rsync --archive --itemize-changes --quite -rsh "ssh -o StrictHostKeyChecking=no" --delete-during --numeric-ids\
     ${ROPTION[@]} root@$COMPUTERNAME:$DIR \
     $CNAME_PATH
 
