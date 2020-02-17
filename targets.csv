@@ -1,6 +1,6 @@
 st-linapp1040.st.statoil.no;vmm04.prod.sdp.statoil.no;;"/data/docker";
 ai-linapp1034.statoil.no;mon01.prod.sdp.statoil.no;;"/data";data/dockerroot*
-tr-vsdp01.tr.statoil.no;git01.prod.sdp.statoil.no;;"/data/docker/dockerfiles/gitlab";
+tr-vsdp01.tr.statoil.no;git01.prod.sdp.statoil.no;;"/data/docker/dockerfiles/gitlab";/data/docker/dockerfiles/gitlab/data/gitlab/data/backups
 tr-vsdp03.tr.statoil.no;vmm03.prod.sdp.statoil.no;;"/data/docker" "/data/sdpsoft";
 ai-linapp1085.statoil.no;jenkins01.prod.sdp.statoil.no;;"/data/sdpteam";
 st-linapp1068.st.statoil.no;jenkins02.prod.sdp.statoil.no;10.217.112.67;"/data";data/dockerroot*
