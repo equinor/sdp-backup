@@ -4,7 +4,6 @@ tr-vsdp03.tr.statoil.no;vmm03.prod.sdp.statoil.no;;"/data/docker" "/data/sdpsoft
 ai-linapp1085.statoil.no;jenkins01.prod.sdp.statoil.no;;"/data/sdpteam";
 st-linapp1068.st.statoil.no;jenkins02.prod.sdp.statoil.no;10.217.112.67;"/data";data/dockerroot*
 ai-linapp1085.statoil.no;jenkins03.sdp.equinor.com;;"/data/sdpteam";
-st-linapp1037.st.statoil.no;app01.dev.rip.statoil.no;;"/data/rip";
 st-linapp1049.st.statoil.no;bld01.prod.sdp.statoil.no;;"/home";
 ai-linapp1040.statoil.no;cfg01.prod.sdp.statoil.no;;"/data/";
 tr-vsdp02.tr.statoil.no;vmm02.prod.sdp.statoil.no;;"/data/";
@@ -12,5 +11,4 @@ ai-linapp1112.statoil.no;vmm05.prod.sdp.statoil.no;;"/data/sdpteam/";
 10.73.68.101;vm01.sdp.equinor.com;;"/data";
 10.73.68.102;vm02.sdp.equinor.com;;"/data";
 10.73.68.103;vm03.sdp.equinor.com;;"/data";
-10.73.68.104;vm04.sdp.equinor.com;;"/data";
 10.73.68.105;vm05.sdp.equinor.com;;"/data";
