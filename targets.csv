@@ -6,6 +6,6 @@ vm02.sdp.equinor.com;vm02.sdp.equinor.com;;"/data";
 vm03.sdp.equinor.com;vm03.sdp.equinor.com;;"/data";
 vm31.sdp.equinor.com;vm31.sdp.equinor.com;;"/data";
 vm32.sdp.equinor.com;vm32.sdp.equinor.com;;"/data" "/var/lib/docker/volumes";
-vm33.sdp.equinor.com;vm33.sdp.equinor.com;;"/data/sdpteam";
+vm33.sdp.equinor.com;vm33.sdp.equinor.com;;"/data";
 vm35.sdp.equinor.com;jenkins02.sdp.equinor.com;;"/data/sdpteam";
 vm36.sdp.equinor.com;jenkins04.sdp.equinor.com;;"/data/sdpteam";
