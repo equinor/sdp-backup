@@ -1,5 +1,5 @@
 # Backup SDP
-Scripts used to backup SDP resources. Intended to be run as a cronjob. Requires minimal configuration of nodes.
+Scripts used to backup SDP VM resources. Intended to be run as a cronjob. Requires minimal configuration of nodes.
 
 The main backup script can be used in two ways.
 1. Backup directories manually defined in a CSV-file
